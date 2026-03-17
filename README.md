@@ -12,18 +12,22 @@ Main repository: https://gitlab.com/mayerdev/openexchange
 
 ## Structure
 
-| Folder        | Description           |
-|---------------|-----------------------|
-| matching-core | Order matching engine |
+| Folder        | Description            |
+|---------------|------------------------|
+| matching-core | Order matching engine  |
+| auth          | Authentication service |
 
 ## Features
 
 The list of features will be updated as development progresses.
 
 **matching-core**:
+
 - [x] Order types
-  - [x] Limit
-  - [x] Market
-- [x] Order matching engine 
+    - [x] Limit
+    - [x] Market
+- [x] Order matching engine
 - [x] Trading history
 - [x] Basic order book
+
+**auth**:
