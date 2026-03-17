@@ -1,0 +1,46 @@
+services:
+  nats:
+    image: nats:2.12.5
+    container_name: oex_nats
+    ports:
+      - '127.0.0.1:4222:4222'
+      - '127.0.0.1:8222:8222'
+    command: ['-js', '-m', '8222']
+    networks:
+      - oex_net
+  postgres:
+    image: timescale/timescaledb:latest-pg17
+    container_name: oex_postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: openexchange
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - ./var/postgres:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - oex_net
+  redis:
+    image: redis:alpine
+    container_name: oex_redis
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - ./var/redis:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - oex_net
+networks:
+  oex_net:
