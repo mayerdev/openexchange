@@ -27,23 +27,39 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-json'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'io.nats:jnats:2.25.2'
     implementation 'com.lmax:disruptor:4.0.0'
-    runtimeOnly    'org.postgresql:postgresql'
+    implementation 'net.openhft:chronicle-map:2026.1'
+    implementation 'net.openhft:chronicle-queue:2026.2'
+    implementation 'net.openhft:chronicle-wire:2026.5'
 
     compileOnly 'org.projectlombok:lombok'
 
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
-
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+def chronicleJvmArgs = [
+    '--add-exports=java.base/jdk.internal.ref=ALL-UNNAMED',
+    '--add-exports=java.base/sun.nio.ch=ALL-UNNAMED',
+    '--add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED',
+    '--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED',
+    '--add-opens=jdk.compiler/com.sun.tools.javac=ALL-UNNAMED',
+    '--add-opens=java.base/java.lang=ALL-UNNAMED',
+    '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
+    '--add-opens=java.base/java.io=ALL-UNNAMED',
+    '--add-opens=java.base/sun.nio.ch=ALL-UNNAMED',
+    '--add-opens=java.base/java.nio=ALL-UNNAMED',
+]
+
+tasks.named('bootRun') {
+    jvmArgs += chronicleJvmArgs
+}
+
 tasks.named('test') {
     useJUnitPlatform()
+    jvmArgs += chronicleJvmArgs
 }

@@ -27,3 +27,5 @@ out/
 /nbdist/
 /.nb-gradle/
 .vscode/
+tests.md
+data/
