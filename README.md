@@ -29,5 +29,6 @@ The list of features will be updated as development progresses.
 - [x] Order matching engine
 - [x] Trading history
 - [x] Basic order book
+- [x] Candlestick charts
 
 **auth**:
