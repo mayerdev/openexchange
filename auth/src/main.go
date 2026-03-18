@@ -18,6 +18,10 @@ func main() {
 
 	v := validator.New()
 
+	if err := v.RegisterValidation("password", utils.PasswordValidate); err != nil {
+		panic(err)
+	}
+
 	v.RegisterTagNameFunc(func(fld reflect.StructField) string {
 		name := strings.SplitN(fld.Tag.Get("json"), ",", 2)[0]
 		if name == "-" {
@@ -40,20 +44,20 @@ func main() {
 					}
 				}
 
-				return types.EmitError(ctx, types.ErrorValidation, "Validation failed", fieldErrors)
+				return types.EmitError(ctx, 400, "Validation error", fieldErrors)
 			}
 
 			var e *fiber.Error
 			if errors.As(err, &e) {
 				switch e.Code {
 				case fiber.StatusNotFound:
-					return types.EmitError(ctx, types.ErrorNotFound, e.Message, types.NoErrors)
+					return types.EmitError(ctx, 404, e.Message, types.NoErrors)
 				default:
-					return types.EmitError(ctx, types.ErrorValidation, e.Message, types.NoErrors)
+					return types.EmitError(ctx, 400, e.Message, types.NoErrors)
 				}
 			}
 
-			return types.EmitError(ctx, types.ErrorServerError, "Internal server error", types.NoErrors)
+			return types.EmitError(ctx, 500, "SERVER_ERROR", types.NoErrors)
 		},
 	})
 

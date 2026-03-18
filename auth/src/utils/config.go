@@ -29,8 +29,13 @@ type ConfigFile struct {
 var Config ConfigFile
 
 func LoadConfig() {
-	viper.SetConfigName("config")
-	viper.SetConfigType("json")
+	viper.SetConfigFile(".env")
+	viper.SetConfigType("env")
+
+	if err := viper.ReadInConfig(); err != nil {
+		panic(err)
+	}
+
 	viper.AddConfigPath(".")
 
 	viper.SetDefault("listen", "0.0.0.0:3000")
@@ -47,10 +52,6 @@ func LoadConfig() {
 
 	viper.SetEnvPrefix("OEX")
 	viper.AutomaticEnv()
-
-	if err := viper.ReadInConfig(); err != nil {
-		panic(err)
-	}
 
 	if err := viper.Unmarshal(&Config); err != nil {
 		panic(err)

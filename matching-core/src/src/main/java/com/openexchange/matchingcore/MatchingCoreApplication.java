@@ -1,5 +1,6 @@
 package com.openexchange.matchingcore;
 
+import com.openexchange.matchingcore.charts.CandleProperties;
 import com.openexchange.matchingcore.chronicle.ChronicleProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
-@EnableConfigurationProperties(ChronicleProperties.class)
+@EnableConfigurationProperties({ChronicleProperties.class, CandleProperties.class})
 public class MatchingCoreApplication {
     public static void main(String[] args) {
         SpringApplication.run(MatchingCoreApplication.class, args);
