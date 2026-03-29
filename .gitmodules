@@ -1,0 +1,3 @@
+[submodule "auth"]
+	path = auth
+	url = https://gitlab.com/mayerdev/openauth.git
